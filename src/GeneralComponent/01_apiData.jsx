@@ -48,11 +48,15 @@ export default class APIData extends React.Component {
             headers: {'Content-Type':'application/x-www-form-urlencoded'},
             mode:'cors',
             body: JSON.stringify({
-                firstName: this.state.name,
+                firstName: this.state.firstName,
                 lastName: this.state.lastName,
                 email: this.state.email,
             })
-        }).then(response => response.json()).then(response => console.log(response))
+        }).then(response => response.json()).then(response => {
+            console.log(response);
+            const newRepos = this.state.repos.slice();
+            newRepos.push(response)
+            this.setState({repos:  newRepos})} )
 
     };
 
@@ -61,7 +65,22 @@ export default class APIData extends React.Component {
         fetch('https://budget-eb326.web.app/api/v1/contacts/' + id, {
             method: 'DELETE',
             mode:'cors',
-        }).then(response => response.json()).then(response => console.log(response))
+        }).then(response => response.json()).then(response => {
+        
+            const { repos } = this.state;
+            const index = repos.findIndex(repo => repo.id === id);
+
+            const newRepos = repos.slice();
+            newRepos.splice(index, 1 );
+            this.setState({ repos: newRepos })
+
+
+            console.log(response)
+        });
+            
+        
+
+        
 
     };
 
