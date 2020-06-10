@@ -10,6 +10,7 @@ export default class APIData extends React.Component {
             firstName: '',
             lastName: '',
             email: '',
+            editedElement: null
         };
     };
 
@@ -42,10 +43,9 @@ export default class APIData extends React.Component {
     };
 
     addUser = () => {
-
         fetch('https://budget-eb326.web.app/api/v1/contacts', {
             method: 'POST',
-            headers: {'Content-Type':'application/x-www-form-urlencoded'},
+            headers: { "Content-Type": "application/json" },
             mode:'cors',
             body: JSON.stringify({
                 firstName: this.state.firstName,
@@ -59,6 +59,32 @@ export default class APIData extends React.Component {
             this.setState({repos:  newRepos})} )
 
     };
+
+    updateUser = () => {
+        fetch('https://budget-eb326.web.app/api/v1/contacts/' + this.state.editedElement, {
+            method: 'PATCH',
+            headers: { "Content-Type": "application/json" },
+            mode:'cors',
+            body: JSON.stringify({
+                firstName: this.state.firstName,
+                lastName: this.state.lastName,
+                email: this.state.email
+            })
+        }).then(response => response.json()).then(response => {
+            console.log(response);
+            const newRepos = this.state.repos.slice();
+            const repoIndex = newRepos.findIndex(repo => repo.id === this.state.editedElement);
+            newRepos[repoIndex] = { 
+                id: this.state.editedElement, 
+                firstName: this.state.firstName, 
+                lastName: this.state.lastName, 
+                email: this.state.email
+            };
+            
+            this.setState({repos:  newRepos, firstName: '', lastName: '', email: '', editedElement: null})} )
+
+    };
+
 
     deleteUser = (id) => {
 
@@ -77,15 +103,28 @@ export default class APIData extends React.Component {
 
             console.log(response)
         });
-            
-        
+    }
 
-        
+    editUser = (id) => {
+        const repo = this.state.repos.find(repo => repo.id === id);
+        const { firstName, lastName, email } = repo;
 
-    };
+        this.setState({ 
+            editedElement: id,
+            firstName,
+            lastName,
+            email
+        });
+    }
+
+    undoEdit = () => {
+        this.setState({ firstName: '', lastName: '', email: '', editedElement: null });
+    }
+        
 
     render () {
-        const { repos } = this.state;
+        const { repos, editedElement } = this.state;
+
         return (
             <div>
                 <div>
@@ -105,6 +144,7 @@ export default class APIData extends React.Component {
                                     <td>{value.lastName}</td>
                                     <td>{value.email}</td>
                                     <td>{value.id}</td>
+                                    <td onClick={()=>this.editUser(value.id)} /*id={index}*/>Edit</td>
                                     <td onClick={()=>this.deleteUser(value.id)} /*id={index}*/>x</td>
                                 </tr>
                             );
@@ -126,7 +166,8 @@ export default class APIData extends React.Component {
                             
                         </div>
                         <div>
-                            <input onClick={this.addUser} value='send' type='button'></input>
+                            <input onClick={editedElement ? this.updateUser : this.addUser} value='send' type='button'></input>
+                            {editedElement && <input onClick={this.undoEdit} value='undo' type='button'></input>}
                         </div>
                     </form>
                 </div>
