@@ -13,6 +13,7 @@ const initialState = {
   lastName: '',
   email: '',
   editedElement: null,
+  modalWindow: false,
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -23,6 +24,7 @@ const rootReducer = (state = initialState, action) => {
     return {
       ...state, //  spread operator. перезаписать все поля в новый объект
       repos: action.payload.repos,
+      modalWindow: false,
     };
   };
 
@@ -51,7 +53,7 @@ const rootReducer = (state = initialState, action) => {
     return {
       ...state,
       repos: action.payload.repos,
-      firstName: '', lastName: '', email: '', editedElement: null,
+      firstName: '', lastName: '', email: '', editedElement: null, modalWindow: false,
     };
   };
 
@@ -62,6 +64,7 @@ const rootReducer = (state = initialState, action) => {
       firstName: action.payload.firstName,
       lastName: action.payload.lastName,
       email: action.payload.email,
+      modalWindow: true,
     };
   };
 
@@ -69,7 +72,7 @@ const rootReducer = (state = initialState, action) => {
     return {
       ...state,
        
-      firstName: '', lastName: '', email: '', editedElement: null,
+      firstName: '', lastName: '', email: '', editedElement: null, modalWindow: false,
     };
   };
 
@@ -77,8 +80,15 @@ const rootReducer = (state = initialState, action) => {
     return {
       ...state,
       repos: action.payload.repos,
-    }
-  }
+    };
+  };
+
+  if (action.type === 'API_DATA/OPEN_MODAL_WINDOW') {
+    return {
+      ...state,
+      modalWindow: true,
+    };
+  };
 
   return state;
 };

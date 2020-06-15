@@ -3,18 +3,6 @@ import { connect } from 'react-redux';
 
 class APIData extends React.Component {
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            // repos: [],
-            // firstName: '',
-            // lastName: '',
-            // email: '',
-            // editedElement: null
-        };
-    };
-
     componentDidMount () {
         fetch('https://budget-eb326.web.app/api/v1/contacts').
         then(response => response.json()).
@@ -60,6 +48,7 @@ class APIData extends React.Component {
                 firstName: this.props.firstName,
                 lastName: this.props.lastName,
                 email: this.props.email,
+                modalWindow: false,
             })
         }).then(response => response.json()).then(response => {
             console.log(response);
@@ -89,7 +78,8 @@ class APIData extends React.Component {
                 id: this.props.editedElement, 
                 firstName: this.props.firstName, 
                 lastName: this.props.lastName, 
-                email: this.props.email
+                email: this.props.email,
+                modalWindow: false,
             };
             
             this.props.dispatch({type: 'API_DATA/UPDATE_REPOS', payload: {
@@ -123,10 +113,11 @@ class APIData extends React.Component {
         const { firstName, lastName, email } = repo;
 
         this.props.dispatch({ type: 'API_DATA/EDIT_USER', payload: {
-            id,
+            id, //editedElement = id => 177
             firstName,
             lastName,
             email,
+            modalWindow: true,
         }});
     };
 
@@ -136,12 +127,19 @@ class APIData extends React.Component {
             lastName: '',
             email: '',
             editedElement: null,
+            modalWindow: false,
+        }})
+    };
+
+    openModalWindow = () => {
+        this.props.dispatch({type: 'API_DATA/OPEN_MODAL_WINDOW', payload: {
+            modalWindow: true,
         }})
     };
         
 
     render () {
-        const { editedElement } = this.props;
+        const { editedElement, modalWindow } = this.props;
         const { repos, firstName, lastName, email } = this.props;
 
         console.log('props: ', this.props);
@@ -165,14 +163,18 @@ class APIData extends React.Component {
                                     <td>{value.lastName}</td>
                                     <td>{value.email}</td>
                                     <td>{value.id}</td>
-                                    <td onClick={()=>this.editUser(value.id)} /*id={index}*/>Edit</td>
-                                    <td onClick={()=>this.deleteUser(value.id)} /*id={index}*/>x</td>
+                                    <td onClick={()=>this.editUser(value.id)}>Edit</td>
+                                    <td onClick={()=>this.deleteUser(value.id)}>x</td>
                                 </tr>
                             );
                         })}</tbody>
                     </table>
                 </div>
                 <div>
+                    <button onClick = {this.openModalWindow}>+</button>
+                </div>
+                
+                {modalWindow && <div class = 'modal'>
                     <form>
                         <div>Name:
                             <input onChange={this.onChangeName} value={firstName} id='nameID' type='text'></input>
@@ -188,10 +190,10 @@ class APIData extends React.Component {
                         </div>
                         <div>
                             <input onClick={editedElement ? this.updateUser : this.addUser} value='send' type='button'></input>
-                            {editedElement && <input onClick={this.undoEdit} value='undo' type='button'></input>}
+                            <input onClick={this.undoEdit} value='undo' type='button'></input>
                         </div>
                     </form>
-                </div>
+                </div>}
                 
             </div>
         );
@@ -205,6 +207,7 @@ const mapStateToProps = (store) => {
         lastName: store.lastName,
         email: store.email,
         editedElement: store.editedElement,
+        modalWindow: store.modalWindow
     }
 }
 
