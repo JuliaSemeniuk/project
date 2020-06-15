@@ -1,16 +1,17 @@
 import React from 'react'
+import { connect } from 'react-redux';
 
-export default class APIData extends React.Component {
+class APIData extends React.Component {
 
     constructor(props) {
         super(props);
 
         this.state = {
-            repos: [],
-            firstName: '',
-            lastName: '',
-            email: '',
-            editedElement: null
+            // repos: [],
+            // firstName: '',
+            // lastName: '',
+            // email: '',
+            // editedElement: null
         };
     };
 
@@ -18,28 +19,36 @@ export default class APIData extends React.Component {
         fetch('https://budget-eb326.web.app/api/v1/contacts').
         then(response => response.json()).
         then(response => {
-            this.setState({repos: response.map(value => ({
-                firstName: value.firstName,
-                lastName: value.lastName,
-                email: value.email,
-                id: value.id,
-            }))});
+            this.props.dispatch({type: 'API_DATA/GET_REPOS', payload: {
+                repos: response.map(value => ({
+                    firstName: value.firstName,
+                    lastName: value.lastName,
+                    email: value.email,
+                    id: value.id,
+                }))
+            }});
         });
     };
 
-    onChangeName = (event) => {
+    onChangeName = (event) => { 
         let newName = event.target.value;
-        this.setState({firstName: newName});
+        this.props.dispatch({type: 'API_DATA/CHANGE_NAME', payload: {
+            firstName: newName
+        }});
     };
 
     onChangeLastName = (event) => {
         let newLastName = event.target.value;
-        this.setState({lastName: newLastName});      
+        this.props.dispatch({type: 'API_DATA/CHANGE_LASTNAME', payload: {
+            lastName: newLastName
+        }})      
     };
 
     onChangeEmail = (event) => {
         let newEmail = event.target.value;
-        this.setState({email: newEmail}); 
+        this.props.dispatch({type: 'API_DATA/CHANG_EMAIL', payload: {
+            email: newEmail
+        }})
     };
 
     addUser = () => {
@@ -48,43 +57,48 @@ export default class APIData extends React.Component {
             headers: { "Content-Type": "application/json" },
             mode:'cors',
             body: JSON.stringify({
-                firstName: this.state.firstName,
-                lastName: this.state.lastName,
-                email: this.state.email,
+                firstName: this.props.firstName,
+                lastName: this.props.lastName,
+                email: this.props.email,
             })
         }).then(response => response.json()).then(response => {
             console.log(response);
-            const newRepos = this.state.repos.slice();
+            const newRepos = this.props.repos.slice();
             newRepos.push(response)
-            this.setState({repos:  newRepos})} )
-
+            this.props.dispatch({type:'API_DATA/GET_REPOS', payload: {
+                repos:  newRepos
+            }});
+        });
     };
 
     updateUser = () => {
-        fetch('https://budget-eb326.web.app/api/v1/contacts/' + this.state.editedElement, {
+        fetch('https://budget-eb326.web.app/api/v1/contacts/' + this.props.editedElement, {
             method: 'PATCH',
             headers: { "Content-Type": "application/json" },
             mode:'cors',
             body: JSON.stringify({
-                firstName: this.state.firstName,
-                lastName: this.state.lastName,
-                email: this.state.email
+                firstName: this.props.firstName,
+                lastName: this.props.lastName,
+                email: this.props.email
             })
         }).then(response => response.json()).then(response => {
             console.log(response);
-            const newRepos = this.state.repos.slice();
-            const repoIndex = newRepos.findIndex(repo => repo.id === this.state.editedElement);
+            const newRepos = this.props.repos.slice();
+            const repoIndex = newRepos.findIndex(repo => repo.id === this.props.editedElement);
             newRepos[repoIndex] = { 
-                id: this.state.editedElement, 
-                firstName: this.state.firstName, 
-                lastName: this.state.lastName, 
-                email: this.state.email
+                id: this.props.editedElement, 
+                firstName: this.props.firstName, 
+                lastName: this.props.lastName, 
+                email: this.props.email
             };
             
-            this.setState({repos:  newRepos, firstName: '', lastName: '', email: '', editedElement: null})} )
-
+            this.props.dispatch({type: 'API_DATA/UPDATE_REPOS', payload: {
+                repos:  newRepos
+            }})
+        })
     };
 
+    
 
     deleteUser = (id) => {
 
@@ -93,37 +107,44 @@ export default class APIData extends React.Component {
             mode:'cors',
         }).then(response => response.json()).then(response => {
         
-            const { repos } = this.state;
+            const { repos } = this.props;
             const index = repos.findIndex(repo => repo.id === id);
 
             const newRepos = repos.slice();
             newRepos.splice(index, 1 );
-            this.setState({ repos: newRepos })
-
-
+            this.props.dispatch({ type: 'API_DATA/DELETE_REPO', payload: { 
+                repos: newRepos }})
             console.log(response)
         });
     }
 
     editUser = (id) => {
-        const repo = this.state.repos.find(repo => repo.id === id);
+        const repo = this.props.repos.find(repo => repo.id === id);
         const { firstName, lastName, email } = repo;
 
-        this.setState({ 
-            editedElement: id,
+        this.props.dispatch({ type: 'API_DATA/EDIT_USER', payload: {
+            id,
             firstName,
             lastName,
-            email
-        });
-    }
+            email,
+        }});
+    };
 
     undoEdit = () => {
-        this.setState({ firstName: '', lastName: '', email: '', editedElement: null });
-    }
+        this.props.dispatch({type: 'API_DATA/UNDO_EDIT', payload: {
+            firstName: '',
+            lastName: '',
+            email: '',
+            editedElement: null,
+        }})
+    };
         
 
     render () {
-        const { repos, editedElement } = this.state;
+        const { editedElement } = this.props;
+        const { repos, firstName, lastName, email } = this.props;
+
+        console.log('props: ', this.props);
 
         return (
             <div>
@@ -154,13 +175,13 @@ export default class APIData extends React.Component {
                 <div>
                     <form>
                         <div>Name:
-                            <input onChange={this.onChangeName} value={this.state.firstName} id='nameID' type='text'></input>
+                            <input onChange={this.onChangeName} value={firstName} id='nameID' type='text'></input>
                         </div>
                         <div>Last name:
-                            <input onChange={this.onChangeLastName} value={this.state.lastName} id='lastNameID' type='text'></input>
+                            <input onChange={this.onChangeLastName} value={lastName} id='lastNameID' type='text'></input>
                         </div>
                         <div>e-mail:
-                            <input onChange={this.onChangeEmail} value={this.state.email} id='emailID' type='text'></input>    
+                            <input onChange={this.onChangeEmail} value={email} id='emailID' type='text'></input>    
                         </div>
                         <div>id:
                             
@@ -176,3 +197,15 @@ export default class APIData extends React.Component {
         );
     };
 };
+
+const mapStateToProps = (store) => {
+    return {
+        repos: store.repos,
+        firstName: store.firstName,
+        lastName: store.lastName,
+        email: store.email,
+        editedElement: store.editedElement,
+    }
+}
+
+export default connect(mapStateToProps)(APIData);
