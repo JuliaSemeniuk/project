@@ -14,6 +14,9 @@ const initialState = {
   email: '',
   editedElement: null,
   modalWindow: false,
+  
+  list: [],
+  task: 'first task',
 };
 
 const rootReducer = (state = initialState, action) => {

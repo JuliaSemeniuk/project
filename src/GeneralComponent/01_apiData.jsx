@@ -86,9 +86,7 @@ class APIData extends React.Component {
                 repos:  newRepos
             }})
         })
-    };
-
-    
+    };    
 
     deleteUser = (id) => {
 
@@ -135,8 +133,7 @@ class APIData extends React.Component {
         this.props.dispatch({type: 'API_DATA/OPEN_MODAL_WINDOW', payload: {
             modalWindow: true,
         }})
-    };
-        
+    };        
 
     render () {
         const { editedElement, modalWindow } = this.props;
