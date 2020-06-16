@@ -6,6 +6,7 @@ import * as serviceWorker from './serviceWorker';
 import {BrowserRouter} from 'react-router-dom'
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
+import { render } from '@testing-library/react';
 
 const initialState = {
   repos: [],
@@ -18,6 +19,8 @@ const initialState = {
   list: [],
   task: '',
   modalTaskInput: false,
+  isFinished: false,
+  id: '',
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -105,6 +108,34 @@ const rootReducer = (state = initialState, action) => {
     return {
       ...state,
       modalTaskInput: action.payload.modalTaskInput,
+    };
+  };
+
+  if (action.type === 'TO_DO_LIST/GET_NEW_TASK') {
+    return {
+      ...state,
+      task: action.payload.task,
+    };
+  };
+
+  if (action.type === 'TO_DO_LIST/ADD_NEW_TASK') {
+    return {
+      ...state,
+      list: action.payload.list
+    };
+  };
+
+  if (action.type === 'TO_DO_LIST/CANCEL_TASK') {
+    return {
+      ...state,
+      modalTaskInput: action.payload.modalTaskInput,
+    };
+  };
+
+  if (action.type === 'TO_DO_LIST/MAKE_TASK_DONE') {
+    return {
+      ...state,
+      list: action.payload.list,
     };
   };
 

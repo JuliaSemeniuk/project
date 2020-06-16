@@ -204,7 +204,8 @@ const mapStateToProps = (store) => {
         lastName: store.lastName,
         email: store.email,
         editedElement: store.editedElement,
-        modalWindow: store.modalWindow
+        modalWindow: store.modalWindow,
+        
     }
 }
 
