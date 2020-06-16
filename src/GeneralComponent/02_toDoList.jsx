@@ -4,8 +4,16 @@ import { connect } from 'react-redux'
 class ToDoList extends React.Component {
 
     componentDidMount () {
-
-    }
+        fetch('https://budget-eb326.web.app/api/v1/contacts').
+        then(response => response.json()).
+        then(response => {
+            this.props.dispatch({type: 'TO_DO_LIST/GET_TASKS', payload: {
+                list: response.map(value => ({
+                    task: value.firstName,
+                }))
+            }})
+        })
+    };
 
 
     render () {
@@ -13,17 +21,31 @@ class ToDoList extends React.Component {
         const { list, task } = this.props;
 
         return (
-            <div>               
-                   {list.map(value => {
-                       return (
-                            <React.Fragment><input type='checkbox'/>{value.task}<br/></React.Fragment>
-                       )                       
-                   })}
-                            
-                        
-                        
-                    
-                    <input type='button' value='+'/>Add task                           
+            <div>
+                <table>
+                    {list.map(value => {
+                        return (
+                            <React.Fragment>
+                                <tr>
+                                    <td>
+                                        <input type='checkbox'/>
+                                    </td>
+                                    <td>
+                                        {value.task}
+                                    </td>
+                                </tr>
+                            </React.Fragment>
+                        )                       
+                    })}
+                    <tr>
+                        <td>
+                            <input type='button' value='+'/>
+                        </td>
+                        <td>
+                            Add task 
+                        </td> 
+                    </tr>
+                </table>                         
             </div>
         )
     };

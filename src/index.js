@@ -93,6 +93,13 @@ const rootReducer = (state = initialState, action) => {
     };
   };
 
+  if (action.type === 'TO_DO_LIST/GET_TASKS') {
+    return {
+      ...state,
+      list: action.payload.list,
+    };
+  };
+
   return state;
 };
 
