@@ -16,7 +16,8 @@ const initialState = {
   modalWindow: false,
   
   list: [],
-  task: 'first task',
+  task: '',
+  modalTaskInput: false,
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -97,6 +98,13 @@ const rootReducer = (state = initialState, action) => {
     return {
       ...state,
       list: action.payload.list,
+    };
+  };
+
+  if (action.type === 'TO_DO_LIST/OPEN_MODAL_INPUT') {
+    return {
+      ...state,
+      modalTaskInput: action.payload.modalTaskInput,
     };
   };
 

@@ -14,11 +14,17 @@ class ToDoList extends React.Component {
             }})
         })
     };
+    
+    openModalInput = () => {
+        this.props.dispatch({type: 'TO_DO_LIST/OPEN_MODAL_INPUT', payload: {
+            modalTaskInput: true,
+        }})
+    }
 
 
     render () {
 
-        const { list, task } = this.props;
+        const { list, task, modalTaskInput } = this.props;
 
         return (
             <div>
@@ -39,10 +45,15 @@ class ToDoList extends React.Component {
                     })}
                     <tr>
                         <td>
-                            <input type='button' value='+'/>
+                            <input onClick={this.openModalInput} type='button' value='+'/>
                         </td>
                         <td>
-                            Add task 
+                            {modalTaskInput && <React.Fragment>
+                                <input type='text' placeholder='Add task'></input>
+                                <input type='button' value='add'></input>
+                                <input type='button' value='cancel'></input>
+                                </React.Fragment>
+                            } 
                         </td> 
                     </tr>
                 </table>                         
@@ -55,6 +66,7 @@ const mapStateToProps = (store) => {
     return {
         list: store.list,
         task: store.task,
+        modalTaskInput: store.modalTaskInput,
     };
 };
 
