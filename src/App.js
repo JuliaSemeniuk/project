@@ -5,6 +5,7 @@ import APIData from './GeneralComponent/01_apiData'
 import ToDoList from './GeneralComponent/02_toDoList'
 
 function App() {
+  console.log('app js render: ')
   return (
     <div className="App">
       <div>

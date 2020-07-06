@@ -93,13 +93,14 @@ class APIData extends React.Component {
         fetch('https://budget-eb326.web.app/api/v1/contacts/' + id, {
             method: 'DELETE',
             mode:'cors',
-        }).then(response => response.json()).then(response => {
+        }).then(response => response.json()).then(response => { //здесь response используется на строке 106
         
             const { repos } = this.props;
             const index = repos.findIndex(repo => repo.id === id);
 
             const newRepos = repos.slice();
             newRepos.splice(index, 1 );
+
             this.props.dispatch({ type: 'API_DATA/DELETE_REPO', payload: { 
                 repos: newRepos }})
             console.log(response)
@@ -108,13 +109,12 @@ class APIData extends React.Component {
 
     editUser = (id) => {
         const repo = this.props.repos.find(repo => repo.id === id);
-        const { firstName, lastName, email } = repo;
 
         this.props.dispatch({ type: 'API_DATA/EDIT_USER', payload: {
             id, //editedElement = id => 177
-            firstName,
-            lastName,
-            email,
+            firstName: repo.firstName,
+            lastName: repo.lastName,
+            email: repo.email,
             modalWindow: true,
         }});
     };
@@ -140,6 +140,8 @@ class APIData extends React.Component {
         const { repos, firstName, lastName, email } = this.props;
 
         console.log('props: ', this.props);
+
+        console.log('api data render: ')
 
         return (
             <div>

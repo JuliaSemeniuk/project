@@ -7,6 +7,7 @@ import {BrowserRouter} from 'react-router-dom'
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import { render } from '@testing-library/react';
+import { act } from 'react-dom/test-utils';
 
 const initialState = {
   repos: [],
@@ -18,14 +19,14 @@ const initialState = {
   
   list: [],
   task: '',
+  editedTask: null,
   modalTaskInput: false,
-  isFinished: false,
-  id: '',
+  loader: false,
 };
 
 const rootReducer = (state = initialState, action) => {
-  console.log('state: ', state);
-  console.log('action: ', action);
+  // console.log('state: ', state);
+  // console.log('action: ', action);
 
   if (action.type === 'API_DATA/GET_REPOS') {
     return {
@@ -77,8 +78,7 @@ const rootReducer = (state = initialState, action) => {
 
   if (action.type === 'API_DATA/UNDO_EDIT') {
     return {
-      ...state,
-       
+      ...state,       
       firstName: '', lastName: '', email: '', editedElement: null, modalWindow: false,
     };
   };
@@ -119,9 +119,18 @@ const rootReducer = (state = initialState, action) => {
   };
 
   if (action.type === 'TO_DO_LIST/ADD_NEW_TASK') {
+    const newList = state.list.slice();
+    newList.push({
+      id: action.payload.id, 
+      task: action.payload.task,
+      isFinished: false,
+      
+    })
     return {
       ...state,
-      list: action.payload.list
+      list: newList,
+      loader: false, 
+      task: '',   
     };
   };
 
@@ -129,6 +138,7 @@ const rootReducer = (state = initialState, action) => {
     return {
       ...state,
       modalTaskInput: action.payload.modalTaskInput,
+      task: '',
     };
   };
 
@@ -139,6 +149,39 @@ const rootReducer = (state = initialState, action) => {
     };
   };
 
+  if (action.type === 'TO_DO_LIST/DELETE_TASK') {
+    return {
+      ...state,
+      list: action.payload.list,
+    };
+  };
+
+  if (action.type === 'TO_DO_LIST/EDIT_TASK') {
+    return {
+      ...state,
+      editedTask: action.payload.id,
+      task: action.payload.task,
+      modalTaskInput: action.payload.modalTaskInput,
+    }
+
+  };
+
+  if (action.type === 'TO_DO_LIST/UPDATE_TASK') {
+    return {
+      ...state,
+      list: action.payload.list,
+      task: '',
+      editedTask: null,
+    }
+  }
+  ;
+
+  if (action.type == 'TO_DO_LIST/LOAD') {
+    return {
+      ...state,
+      loader: action.payload.loader,
+    }
+  }
   return state;
 };
 
@@ -150,8 +193,7 @@ const project = (
     <App/>
   </BrowserRouter>
   </Provider>
-)
-
+);
 
 ReactDOM.render(
   

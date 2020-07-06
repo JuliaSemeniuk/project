@@ -22,3 +22,11 @@ code {
     border-radius: 7px;
     top: 0;
 }
+
+.loadIcon {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-color: #ecf0f1;
+  z-index: 1;
+}
