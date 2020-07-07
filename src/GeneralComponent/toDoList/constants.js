@@ -1,0 +1,10 @@
+export const GET_TASKS = 'TO_DO_LIST/GET_TASKS';
+export const OPEN_MODAL_INPUT = 'TO_DO_LIST/OPEN_MODAL_INPUT';
+export const GET_NEW_TASK = 'TO_DO_LIST/GET_NEW_TASK';
+export const ADD_NEW_TASK = 'TO_DO_LIST/ADD_NEW_TASK';
+export const LOAD = 'TO_DO_LIST/LOAD';
+export const CANCEL_TASK = 'TO_DO_LIST/CANCEL_TASK';
+export const MAKE_TASK_DONE = 'TO_DO_LIST/MAKE_TASK_DONE';
+export const EDIT_TASK = 'TO_DO_LIST/EDIT_TASK';
+export const UPDATE_TASK = 'TO_DO_LIST/UPDATE_TASK';
+export const DELETE_TASK = 'TO_DO_LIST/DELETE_TASK';

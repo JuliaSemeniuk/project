@@ -17,6 +17,19 @@ import {
     DELETE_USER,
     OPEN_MODAL_WINDOW,
 } from './GeneralComponent/APIData/constants';
+
+import {
+    GET_TASKS,
+    OPEN_MODAL_INPUT,
+    GET_NEW_TASK,
+    ADD_NEW_TASK,
+    LOAD,
+    CANCEL_TASK,
+    MAKE_TASK_DONE,
+    EDIT_TASK,
+    UPDATE_TASK,
+    DELETE_TASK,
+} from './GeneralComponent/toDoList/constants';
 import { render } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
 
@@ -116,28 +129,28 @@ const rootReducer = (state = initialState, action) => {
         };
     }
 
-    if (action.type === 'TO_DO_LIST/GET_TASKS') {
+    if (action.type === GET_TASKS) {
         return {
             ...state,
             list: action.payload.list,
         };
     }
 
-    if (action.type === 'TO_DO_LIST/OPEN_MODAL_INPUT') {
+    if (action.type === OPEN_MODAL_INPUT) {
         return {
             ...state,
             modalTaskInput: action.payload.modalTaskInput,
         };
     }
 
-    if (action.type === 'TO_DO_LIST/GET_NEW_TASK') {
+    if (action.type === GET_NEW_TASK) {
         return {
             ...state,
             task: action.payload.task,
         };
     }
 
-    if (action.type === 'TO_DO_LIST/ADD_NEW_TASK') {
+    if (action.type === ADD_NEW_TASK) {
         const newList = state.list.slice();
         newList.push({
             id: action.payload.id,
@@ -152,7 +165,7 @@ const rootReducer = (state = initialState, action) => {
         };
     }
 
-    if (action.type === 'TO_DO_LIST/CANCEL_TASK') {
+    if (action.type === CANCEL_TASK) {
         return {
             ...state,
             modalTaskInput: action.payload.modalTaskInput,
@@ -160,21 +173,21 @@ const rootReducer = (state = initialState, action) => {
         };
     }
 
-    if (action.type === 'TO_DO_LIST/MAKE_TASK_DONE') {
+    if (action.type === MAKE_TASK_DONE) {
         return {
             ...state,
             list: action.payload.list,
         };
     }
 
-    if (action.type === 'TO_DO_LIST/DELETE_TASK') {
+    if (action.type === DELETE_TASK) {
         return {
             ...state,
             list: action.payload.list,
         };
     }
 
-    if (action.type === 'TO_DO_LIST/EDIT_TASK') {
+    if (action.type === EDIT_TASK) {
         return {
             ...state,
             editedTask: action.payload.id,
@@ -183,7 +196,7 @@ const rootReducer = (state = initialState, action) => {
         };
     }
 
-    if (action.type === 'TO_DO_LIST/UPDATE_TASK') {
+    if (action.type === UPDATE_TASK) {
         return {
             ...state,
             list: action.payload.list,
@@ -191,7 +204,7 @@ const rootReducer = (state = initialState, action) => {
             editedTask: null,
         };
     }
-    if (action.type == 'TO_DO_LIST/LOAD') {
+    if (action.type == LOAD) {
         return {
             ...state,
             loader: action.payload.loader,
