@@ -1,4 +1,17 @@
-const getTasks = (response) => ({
+import {
+    GET_TASKS,
+    OPEN_MODAL_INPUT,
+    GET_NEW_TASK,
+    ADD_NEW_TASK,
+    LOAD,
+    CANCEL_TASK,
+    MAKE_TASK_DONE,
+    EDIT_TASK,
+    UPDATE_TASK,
+    DELETE_TASK,
+} from './constants';
+
+export const getTasks = (response) => ({
     type: GET_TASKS,
     payload: {
         list: response.map((value) => ({
@@ -9,20 +22,69 @@ const getTasks = (response) => ({
     },
 });
 
-const x = () => ();
+export const openModalWindow = () => ({
+    type: OPEN_MODAL_INPUT,
+    payload: {
+        modalTaskInput: true,
+    },
+});
 
-const x = () => ();
+export const getNewTask = (newTask) => ({
+    type: GET_NEW_TASK,
+    payload: {
+        task: newTask,
+    },
+});
 
-const x = () => ();
+export const addNewTask = (response) => ({
+    type: ADD_NEW_TASK,
+    payload: {
+        task: response.firstName,
+        id: response.id,
+        loader: false,
+    },
+});
 
-const x = () => ();
+export const load = () => ({
+    type: LOAD,
+    payload: {
+        loader: true,
+    },
+});
 
-const x = () => ();
+export const cancelTask = () => ({
+    type: CANCEL_TASK,
+    payload: {
+        modalTaskInput: false,
+    },
+});
 
-const x = () => ();
+export const makeTaskDone = (newList) => ({
+    type: MAKE_TASK_DONE,
+    payload: {
+        list: newList,
+    },
+});
 
-const x = () => ();
+export const editTask = (currentTask, id) => ({
+    type: EDIT_TASK,
+    payload: {
+        id,
+        task: currentTask.task,
+        modalTaskInput: true,
+    },
+});
 
-const x = () => ();
+export const updateTask = (newList) => ({
+    type: UPDATE_TASK,
+    payload: {
+        list: newList,
+    },
+});
 
-const x = () => ();
+export const deleteTask = (newList) => ({
+    type: DELETE_TASK,
+    payload: {
+        list: newList,
+    },
+});

@@ -1,6 +1,17 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { getTasks } from './actions;';
+import {
+    getTasks,
+    openModalWindow,
+    getNewTask,
+    addNewTask,
+    load,
+    cancelTask,
+    makeTaskDone,
+    editTask,
+    updateTask,
+    deleteTask,
+} from './actions';
 
 class ToDoList extends React.Component {
     componentDidMount() {
@@ -12,22 +23,12 @@ class ToDoList extends React.Component {
     }
 
     openModalInput = () => {
-        this.props.dispatch({
-            type: OPEN_MODAL_INPUT,
-            payload: {
-                modalTaskInput: true,
-            },
-        });
+        this.props.dispatch(openModalWindow());
     };
 
     onChangeTask = (event) => {
         let newTask = event.target.value;
-        this.props.dispatch({
-            type: GET_NEW_TASK,
-            payload: {
-                task: newTask,
-            },
-        });
+        this.props.dispatch(getNewTask(newTask));
     };
 
     addTask = () => {
@@ -51,32 +52,15 @@ class ToDoList extends React.Component {
             .then((response) => response.json())
             .then((response) => {
                 console.log(response);
-                this.props.dispatch({
-                    type: ADD_NEW_TASK,
-                    payload: {
-                        task: response.firstName,
-                        id: response.id,
-                        loader: false,
-                    },
-                });
+                this.props.dispatch(addNewTask(response));
                 console.log('addtask2');
             });
         console.log(promise);
-        this.props.dispatch({
-            type: LOAD,
-            payload: {
-                loader: true,
-            },
-        });
+        this.props.dispatch(load());
     };
 
     cancelTask = () => {
-        this.props.dispatch({
-            type: CANCEL_TASK,
-            payload: {
-                modalTaskInput: false,
-            },
-        });
+        this.props.dispatch(cancelTask());
     };
 
     makeTaskDone = (event) => {
@@ -93,12 +77,7 @@ class ToDoList extends React.Component {
             isFinished: !newList[taskIndex].isFinished,
         };
 
-        this.props.dispatch({
-            type: MAKE_TASK_DONE,
-            payload: {
-                list: newList,
-            },
-        });
+        this.props.dispatch(makeTaskDone(newList));
     };
 
     editTask = (id) => {
@@ -107,14 +86,7 @@ class ToDoList extends React.Component {
         const currentTask = list.find((task) => task.id === id);
         console.log(currentTask);
 
-        this.props.dispatch({
-            type: EDIT_TASK,
-            payload: {
-                id,
-                task: currentTask.task,
-                modalTaskInput: true,
-            },
-        });
+        this.props.dispatch(editTask(currentTask, id));
     };
 
     updateTask = () => {
@@ -146,12 +118,7 @@ class ToDoList extends React.Component {
                     modalTaskInput: false,
                 };
 
-                this.props.dispatch({
-                    type: UPDATE_TASK,
-                    payload: {
-                        list: newList,
-                    },
-                });
+                this.props.dispatch(updateTask(newList));
             });
     };
 
@@ -170,12 +137,7 @@ class ToDoList extends React.Component {
                 const newList = list.slice();
                 newList.splice(index, 1);
 
-                this.props.dispatch({
-                    type: DELETE_TASK,
-                    payload: {
-                        list: newList,
-                    },
-                });
+                this.props.dispatch(deleteTask(newList));
             });
     };
 
