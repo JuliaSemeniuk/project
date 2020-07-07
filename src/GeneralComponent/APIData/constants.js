@@ -1,0 +1,3 @@
+export const GET_REPOS = 'API_DATA/GET_REPOS';
+export const CHANGE_NAME = 'API_DATA/CHANGE_NAME';
+export const UPDATE_REPOS = 'API_DATA/UPDATE_REPOS';
