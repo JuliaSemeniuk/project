@@ -1,4 +1,14 @@
-import { UPDATE_REPOS, CHANGE_NAME, GET_REPOS } from './constants';
+import {
+    GET_REPOS,
+    CHANGE_NAME,
+    CHANGE_LASTNAME,
+    CHANGE_EMAIL,
+    UPDATE_REPOS,
+    EDIT_USER,
+    UNDO_EDIT,
+    DELETE_USER,
+    OPEN_MODAL_WINDOW,
+} from './constants';
 
 export const getRepos = (response) => ({
     type: GET_REPOS,
@@ -20,21 +30,21 @@ export const changeName = (newName) => ({
 });
 
 export const changeLastName = (newLastName) => ({
-    type: 'API_DATA/CHANGE_LASTNAME',
+    type: CHANGE_LASTNAME,
     payload: {
         lastName: newLastName,
     },
 });
 
 export const changeEmail = (newEmail) => ({
-    type: 'API_DATA/CHANG_EMAIL',
+    type: CHANGE_EMAIL,
     payload: {
         email: newEmail,
     },
 });
 
 export const deleteUser = (newRepos) => ({
-    type: 'API_DATA/DELETE_REPO',
+    type: DELETE_USER,
     payload: {
         repos: newRepos,
     },
@@ -48,7 +58,7 @@ export const updateRepos = (newRepos) => ({
 });
 
 export const editUser = (repo, id) => ({
-    type: 'API_DATA/EDIT_USER',
+    type: EDIT_USER,
     payload: {
         id,
         firstName: repo.firstName,
@@ -59,7 +69,7 @@ export const editUser = (repo, id) => ({
 });
 
 export const undoEdit = () => ({
-    type: 'API_DATA/UNDO_EDIT',
+    type: UNDO_EDIT,
     payload: {
         firstName: '',
         lastName: '',
@@ -70,7 +80,7 @@ export const undoEdit = () => ({
 });
 
 export const openModalWindow = () => ({
-    type: 'API_DATA/OPEN_MODAL_WINDOW',
+    type: OPEN_MODAL_WINDOW,
     payload: {
         modalWindow: true,
     },

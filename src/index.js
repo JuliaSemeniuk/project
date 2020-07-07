@@ -9,7 +9,13 @@ import { Provider } from 'react-redux';
 import {
     UPDATE_REPOS,
     CHANGE_NAME,
+    CHANGE_LASTNAME,
+    CHANGE_EMAIL,
     GET_REPOS,
+    EDIT_USER,
+    UNDO_EDIT,
+    DELETE_USER,
+    OPEN_MODAL_WINDOW,
 } from './GeneralComponent/APIData/constants';
 import { render } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
@@ -48,14 +54,14 @@ const rootReducer = (state = initialState, action) => {
         };
     }
 
-    if (action.type === 'API_DATA/CHANGE_LASTNAME') {
+    if (action.type === CHANGE_LASTNAME) {
         return {
             ...state,
             lastName: action.payload.lastName,
         };
     }
 
-    if (action.type === 'API_DATA/CHANG_EMAIL') {
+    if (action.type === CHANGE_EMAIL) {
         return {
             ...state,
             email: action.payload.email,
@@ -74,7 +80,7 @@ const rootReducer = (state = initialState, action) => {
         };
     }
 
-    if (action.type === 'API_DATA/EDIT_USER') {
+    if (action.type === EDIT_USER) {
         return {
             ...state,
             editedElement: action.payload.id,
@@ -85,7 +91,7 @@ const rootReducer = (state = initialState, action) => {
         };
     }
 
-    if (action.type === 'API_DATA/UNDO_EDIT') {
+    if (action.type === UNDO_EDIT) {
         return {
             ...state,
             firstName: '',
@@ -96,14 +102,14 @@ const rootReducer = (state = initialState, action) => {
         };
     }
 
-    if (action.type === 'API_DATA/DELETE_REPO') {
+    if (action.type === DELETE_USER) {
         return {
             ...state,
             repos: action.payload.repos,
         };
     }
 
-    if (action.type === 'API_DATA/OPEN_MODAL_WINDOW') {
+    if (action.type === OPEN_MODAL_WINDOW) {
         return {
             ...state,
             modalWindow: true,
