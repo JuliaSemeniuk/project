@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import { Route } from 'react-router-dom';
 import APIDataContainer from './GeneralComponent/APIData/APIDataContainer';
-import ToDoList from './GeneralComponent/toDoList/toDoList';
+import ToDoListContainer from './GeneralComponent/toDoList/toDoListContainer';
 
 function App() {
     console.log('app js render: ');
@@ -23,7 +23,11 @@ function App() {
             />
             <Route path="/APIData" exact render={() => <APIDataContainer />} />{' '}
             {/*localhost:3000/, параметр exact вказує на те, компонет необхідно рендерити в тому випадку, ящо він повістю співпадає з вузлом*/}
-            <Route path="/toDoList" exact render={() => <ToDoList />} />
+            <Route
+                path="/toDoList"
+                exact
+                render={() => <ToDoListContainer />}
+            />
         </div>
     );
 }

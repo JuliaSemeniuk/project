@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import toDoList from './toDoList';
+import ToDoList from './ToDoList';
 import {
     getTasks,
     openModalWindow,
@@ -43,8 +43,6 @@ class ToDoListContainer extends React.Component {
                 email: this.props.task,
             }),
         };
-
-        console.log('addtask1');
 
         const promise = fetch(
             'https://budget-eb326.web.app/api/v1/contacts',
@@ -153,96 +151,24 @@ class ToDoListContainer extends React.Component {
             loader,
         } = this.props;
 
-        console.log(editedTask);
-
         return (
-            <div>
-                {loader && (
-                    <div class="loadIcon">
-                        <img src="https://icon-library.com/images/load-icon-gif/load-icon-gif-5.jpg" />
-                    </div>
-                )}
-                <table>
-                    <tbody>
-                        {list.map((value) => {
-                            return (
-                                <tr key={value.id}>
-                                    <td>
-                                        <input
-                                            onChange={this.makeTaskDone}
-                                            type="checkbox"
-                                            checked={value.isFinished}
-                                            id={value.id}
-                                        />
-                                    </td>
-                                    <td
-                                        style={{
-                                            textDecoration: value.isFinished
-                                                ? 'line-through'
-                                                : 'none',
-                                        }}
-                                    >
-                                        {value.task}
-                                    </td>
-                                    <td>
-                                        <button
-                                            onClick={() =>
-                                                this.editTask(value.id)
-                                            }
-                                        >
-                                            edit
-                                        </button>
-                                    </td>
-                                    <td>
-                                        <button
-                                            onClick={() =>
-                                                this.deleteTask(value.id)
-                                            }
-                                        >
-                                            X
-                                        </button>
-                                    </td>
-                                </tr>
-                            );
-                        })}
-                        <tr>
-                            <td>
-                                <input
-                                    onClick={this.openModalInput}
-                                    type="button"
-                                    value="+"
-                                />
-                            </td>
-                            <td>
-                                {modalTaskInput && (
-                                    <React.Fragment>
-                                        <input
-                                            onChange={this.onChangeTask}
-                                            value={task}
-                                            type="text"
-                                            placeholder="Add task"
-                                        ></input>
-                                        <input
-                                            onClick={
-                                                editedTask
-                                                    ? this.updateTask
-                                                    : this.addTask
-                                            }
-                                            type="button"
-                                            value="send"
-                                        ></input>
-                                        <input
-                                            onClick={this.cancelTask}
-                                            type="button"
-                                            value="cancel"
-                                        ></input>
-                                    </React.Fragment>
-                                )}
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+            <ToDoList
+                list={list}
+                task={task}
+                modalTaskInput={modalTaskInput}
+                isFinished={isFinished}
+                id={id}
+                editedTask={editedTask}
+                loader={loader}
+                deleteTask={this.deleteTask}
+                updateTask={this.updateTask}
+                editTask={this.editTask}
+                makeTaskDone={this.makeTaskDone}
+                cancelTask={this.cancelTask}
+                addTask={this.addTask}
+                onChangeTask={this.onChangeTask}
+                openModalInput={this.openModalInput}
+            />
         );
     }
 }
