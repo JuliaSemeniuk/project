@@ -52,165 +52,171 @@ const rootReducer = (state = initialState, action) => {
     // console.log('state: ', state);
     // console.log('action: ', action);
 
-    if (action.type === GET_REPOS) {
-        return {
-            ...state, //  spread operator. перезаписать все поля в новый объект
-            repos: action.payload.repos,
-            modalWindow: false,
-        };
-    }
+    switch (action.type) {
+        case GET_REPOS: {
+            return {
+                ...state, //  spread operator. перезаписать все поля в новый объект
+                repos: action.payload.repos,
+                modalWindow: false,
+            };
+        }
 
-    if (action.type === CHANGE_NAME) {
-        return {
-            ...state,
-            firstName: action.payload.firstName,
-        };
-    }
+        case CHANGE_NAME: {
+            return {
+                ...state,
+                firstName: action.payload.firstName,
+            };
+        }
 
-    if (action.type === CHANGE_LASTNAME) {
-        return {
-            ...state,
-            lastName: action.payload.lastName,
-        };
-    }
+        case CHANGE_LASTNAME: {
+            return {
+                ...state,
+                lastName: action.payload.lastName,
+            };
+        }
 
-    if (action.type === CHANGE_EMAIL) {
-        return {
-            ...state,
-            email: action.payload.email,
-        };
-    }
+        case CHANGE_EMAIL: {
+            return {
+                ...state,
+                email: action.payload.email,
+            };
+        }
 
-    if (action.type === UPDATE_REPOS) {
-        return {
-            ...state,
-            repos: action.payload.repos,
-            firstName: '',
-            lastName: '',
-            email: '',
-            editedElement: null,
-            modalWindow: false,
-        };
-    }
+        case UPDATE_REPOS: {
+            return {
+                ...state,
+                repos: action.payload.repos,
+                firstName: '',
+                lastName: '',
+                email: '',
+                editedElement: null,
+                modalWindow: false,
+            };
+        }
 
-    if (action.type === EDIT_USER) {
-        return {
-            ...state,
-            editedElement: action.payload.id,
-            firstName: action.payload.firstName,
-            lastName: action.payload.lastName,
-            email: action.payload.email,
-            modalWindow: true,
-        };
-    }
+        case EDIT_USER: {
+            return {
+                ...state,
+                editedElement: action.payload.id,
+                firstName: action.payload.firstName,
+                lastName: action.payload.lastName,
+                email: action.payload.email,
+                modalWindow: true,
+            };
+        }
 
-    if (action.type === UNDO_EDIT) {
-        return {
-            ...state,
-            firstName: '',
-            lastName: '',
-            email: '',
-            editedElement: null,
-            modalWindow: false,
-        };
-    }
+        case UNDO_EDIT: {
+            return {
+                ...state,
+                firstName: '',
+                lastName: '',
+                email: '',
+                editedElement: null,
+                modalWindow: false,
+            };
+        }
 
-    if (action.type === DELETE_USER) {
-        return {
-            ...state,
-            repos: action.payload.repos,
-        };
-    }
+        case DELETE_USER: {
+            return {
+                ...state,
+                repos: action.payload.repos,
+            };
+        }
 
-    if (action.type === OPEN_MODAL_WINDOW) {
-        return {
-            ...state,
-            modalWindow: true,
-        };
-    }
+        case OPEN_MODAL_WINDOW: {
+            return {
+                ...state,
+                modalWindow: true,
+            };
+        }
 
-    if (action.type === GET_TASKS) {
-        return {
-            ...state,
-            list: action.payload.list,
-        };
-    }
+        case GET_TASKS: {
+            return {
+                ...state,
+                list: action.payload.list,
+            };
+        }
 
-    if (action.type === OPEN_MODAL_INPUT) {
-        return {
-            ...state,
-            modalTaskInput: action.payload.modalTaskInput,
-        };
-    }
+        case OPEN_MODAL_INPUT: {
+            return {
+                ...state,
+                modalTaskInput: action.payload.modalTaskInput,
+            };
+        }
 
-    if (action.type === GET_NEW_TASK) {
-        return {
-            ...state,
-            task: action.payload.task,
-        };
-    }
+        case GET_NEW_TASK: {
+            return {
+                ...state,
+                task: action.payload.task,
+            };
+        }
 
-    if (action.type === ADD_NEW_TASK) {
-        const newList = state.list.slice();
-        newList.push({
-            id: action.payload.id,
-            task: action.payload.task,
-            isFinished: false,
-        });
-        return {
-            ...state,
-            list: newList,
-            loader: false,
-            task: '',
-        };
-    }
+        case ADD_NEW_TASK: {
+            const newList = state.list.slice();
+            newList.push({
+                id: action.payload.id,
+                task: action.payload.task,
+                isFinished: false,
+            });
+            return {
+                ...state,
+                list: newList,
+                loader: false,
+                task: '',
+            };
+        }
 
-    if (action.type === CANCEL_TASK) {
-        return {
-            ...state,
-            modalTaskInput: action.payload.modalTaskInput,
-            task: '',
-        };
-    }
+        case CANCEL_TASK: {
+            return {
+                ...state,
+                modalTaskInput: action.payload.modalTaskInput,
+                task: '',
+            };
+        }
 
-    if (action.type === MAKE_TASK_DONE) {
-        return {
-            ...state,
-            list: action.payload.list,
-        };
-    }
+        case MAKE_TASK_DONE: {
+            return {
+                ...state,
+                list: action.payload.list,
+            };
+        }
 
-    if (action.type === DELETE_TASK) {
-        return {
-            ...state,
-            list: action.payload.list,
-        };
-    }
+        case DELETE_TASK: {
+            return {
+                ...state,
+                list: action.payload.list,
+            };
+        }
 
-    if (action.type === EDIT_TASK) {
-        return {
-            ...state,
-            editedTask: action.payload.id,
-            task: action.payload.task,
-            modalTaskInput: action.payload.modalTaskInput,
-        };
-    }
+        case EDIT_TASK: {
+            return {
+                ...state,
+                editedTask: action.payload.id,
+                task: action.payload.task,
+                modalTaskInput: action.payload.modalTaskInput,
+            };
+        }
 
-    if (action.type === UPDATE_TASK) {
-        return {
-            ...state,
-            list: action.payload.list,
-            task: '',
-            editedTask: null,
-        };
+        case UPDATE_TASK: {
+            return {
+                ...state,
+                list: action.payload.list,
+                task: '',
+                editedTask: null,
+            };
+        }
+
+        case LOAD: {
+            return {
+                ...state,
+                loader: action.payload.loader,
+            };
+        }
+
+        default: {
+            return state;
+        } //якщо жоден з кейсів не відпрацює, працюватиме дефолтний кейс, який поверне стейт
     }
-    if (action.type == LOAD) {
-        return {
-            ...state,
-            loader: action.payload.loader,
-        };
-    }
-    return state;
 };
 
 const store = createStore(
