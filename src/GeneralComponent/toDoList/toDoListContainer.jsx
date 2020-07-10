@@ -175,12 +175,12 @@ class ToDoListContainer extends React.Component {
 
 const mapStateToProps = (store) => {
     return {
-        list: store.list,
-        task: store.task,
-        modalTaskInput: store.modalTaskInput,
-        isFinished: store.isFinished,
-        editedTask: store.editedTask,
-        loader: store.loader,
+        list: store.ToDoList.list,
+        task: store.ToDoList.task,
+        modalTaskInput: store.ToDoList.modalTaskInput,
+        isFinished: store.ToDoList.isFinished,
+        editedTask: store.ToDoList.editedTask,
+        loader: store.ToDoList.loader,
     };
 };
 

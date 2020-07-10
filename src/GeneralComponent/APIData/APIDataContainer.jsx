@@ -161,12 +161,12 @@ class APIDataContainer extends React.Component {
 
 const mapStateToProps = (store) => {
     return {
-        repos: store.repos,
-        firstName: store.firstName,
-        lastName: store.lastName,
-        email: store.email,
-        editedElement: store.editedElement,
-        modalWindow: store.modalWindow,
+        repos: store.APIData.repos,
+        firstName: store.APIData.firstName,
+        lastName: store.APIData.lastName,
+        email: store.APIData.email,
+        editedElement: store.APIData.editedElement,
+        modalWindow: store.APIData.modalWindow,
     };
 };
 
