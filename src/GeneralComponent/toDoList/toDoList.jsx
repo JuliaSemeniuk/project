@@ -1,5 +1,6 @@
 import React from 'react';
-
+import { Button } from 'antd';
+import { Input } from 'antd';
 export default class ToDoList extends React.Component {
     constructor(props) {
         super(props);
@@ -53,53 +54,55 @@ export default class ToDoList extends React.Component {
                                         {value.task}
                                     </td>
                                     <td>
-                                        <button
+                                        <Button
                                             onClick={() => editTask(value.id)}
                                         >
                                             edit
-                                        </button>
+                                        </Button>
                                     </td>
                                     <td>
-                                        <button
+                                        <Button
+                                            type="text"
+                                            danger
                                             onClick={() => deleteTask(value.id)}
                                         >
-                                            X
-                                        </button>
+                                            x
+                                        </Button>
                                     </td>
                                 </tr>
                             );
                         })}
                         <tr>
                             <td>
-                                <input
+                                <Button
+                                    type="primary"
+                                    shape="circle"
                                     onClick={openModalInput}
-                                    type="button"
-                                    value="+"
-                                />
+                                >
+                                    +
+                                </Button>
                             </td>
                             <td>
                                 {modalTaskInput && (
                                     <React.Fragment>
-                                        <input
+                                        <Input
+                                            placeholder="Add task"
                                             onChange={onChangeTask}
                                             value={task}
-                                            type="text"
-                                            placeholder="Add task"
-                                        ></input>
-                                        <input
+                                        />
+
+                                        <Button
                                             onClick={
                                                 editedTask
                                                     ? updateTask
                                                     : addTask
                                             }
-                                            type="button"
-                                            value="send"
-                                        ></input>
-                                        <input
-                                            onClick={cancelTask}
-                                            type="button"
-                                            value="cancel"
-                                        ></input>
+                                        >
+                                            send
+                                        </Button>
+                                        <Button danger onClick={cancelTask}>
+                                            cancel
+                                        </Button>
                                     </React.Fragment>
                                 )}
                             </td>

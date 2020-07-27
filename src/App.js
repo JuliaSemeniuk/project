@@ -3,6 +3,7 @@ import './App.css';
 import { Route } from 'react-router-dom';
 import APIDataContainer from './GeneralComponent/APIData/APIDataContainer';
 import ToDoListContainer from './GeneralComponent/ToDoList/ToDoListContainer';
+import 'antd/dist/antd.css';
 
 function App() {
     console.log('app js render: ');
