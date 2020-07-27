@@ -1,143 +1,59 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import ToDoList from './ToDoList';
+import {} from './actions';
+
 import {
-    getTasks,
-    openModalWindow,
-    getNewTask,
-    addNewTask,
-    load,
-    cancelTask,
-    makeTaskDone,
-    editTask,
-    updateTask,
-    deleteTask,
-} from './actions';
+    requestTasks,
+    modalWindow,
+    setTaskName,
+    addingTask,
+    cancelingTask,
+    makingTaskDone,
+    editionTask,
+    updatingTask,
+    deletingTask,
+} from './utils';
 
 class ToDoListContainer extends React.Component {
     componentDidMount() {
-        fetch('https://budget-eb326.web.app/api/v1/contacts')
-            .then((response) => response.json())
-            .then((response) => {
-                this.props.dispatch(getTasks(response));
-            });
+        this.props.requestTasks();
     }
 
     openModalInput = () => {
-        this.props.dispatch(openModalWindow());
+        this.props.modalWindow();
     };
 
     onChangeTask = (event) => {
-        let newTask = event.target.value;
-        this.props.dispatch(getNewTask(newTask));
+        this.props.setTaskName(event);
     };
 
     addTask = () => {
-        const params = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            mode: 'cors',
-            body: JSON.stringify({
-                firstName: this.props.task,
-                lastName: this.props.task,
-                email: this.props.task,
-            }),
-        };
-
-        const promise = fetch(
-            'https://budget-eb326.web.app/api/v1/contacts',
-            params
-        )
-            .then((response) => response.json())
-            .then((response) => {
-                console.log(response);
-                this.props.dispatch(addNewTask(response));
-                console.log('addtask2');
-            });
-        console.log(promise);
-        this.props.dispatch(load());
+        this.props.addingTask(this.props.task);
     };
 
     cancelTask = () => {
-        this.props.dispatch(cancelTask());
+        this.props.cancelingTask();
     };
 
     makeTaskDone = (event) => {
-        const { list } = this.props;
-        const taskIndex = this.props.list.findIndex(
-            (task) => task.id === event.target.id
-        );
-
-        const newList = list.slice();
-
-        newList[taskIndex] = {
-            id: newList[taskIndex].id,
-            task: newList[taskIndex].task,
-            isFinished: !newList[taskIndex].isFinished,
-        };
-
-        this.props.dispatch(makeTaskDone(newList));
+        this.props.makingTaskDone(event, this.props.list);
     };
 
     editTask = (id) => {
-        const { list } = this.props;
-
-        const currentTask = list.find((task) => task.id === id);
-        console.log(currentTask);
-
-        this.props.dispatch(editTask(currentTask, id));
+        this.props.editionTask(id, this.props.list);
     };
 
     updateTask = () => {
-        fetch(
-            'https://budget-eb326.web.app/api/v1/contacts/' +
-                this.props.editedTask,
-            {
-                method: 'PATCH',
-                headers: { 'Content-type': 'application/json' },
-                mode: 'cors',
-                body: JSON.stringify({
-                    firstName: this.props.task, //исклчиттельный слючай под текущую API
-                    lastName: '',
-                    email: '',
-                }),
-            }
-        )
-            .then((response) => response.json())
-            .then((response) => {
-                console.log(response);
-                const index = this.props.list.findIndex(
-                    (task) => task.id === this.props.editedTask
-                );
-                const newList = this.props.list.slice();
-                console.log('current task ' + index);
-                newList[index] = {
-                    id: this.props.editedTask,
-                    task: this.props.task,
-                    modalTaskInput: false,
-                };
-
-                this.props.dispatch(updateTask(newList));
-            });
+        this.props.updatingTask(
+            this.props.editedTask,
+            this.props.task,
+            this.props.list
+        );
     };
 
     deleteTask = (id) => {
-        fetch('https://budget-eb326.web.app/api/v1/contacts/' + id, {
-            method: 'DELETE',
-            mode: 'cors',
-        })
-            .then((response) => response.json())
-            .then(() => {
-                //здесь респонс не используется
-
-                const { list } = this.props;
-                const index = list.findIndex((task) => task.id === id);
-
-                const newList = list.slice();
-                newList.splice(index, 1);
-
-                this.props.dispatch(deleteTask(newList));
-            });
+        this.props.deletingTask(id, this.props.list);
     };
 
     render() {
@@ -150,6 +66,8 @@ class ToDoListContainer extends React.Component {
             editedTask,
             loader,
         } = this.props;
+
+        console.log('this.props: ', this.props);
 
         return (
             <ToDoList
@@ -184,4 +102,19 @@ const mapStateToProps = (store) => {
     };
 };
 
-export default connect(mapStateToProps)(ToDoListContainer);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        requestTasks: () => requestTasks(dispatch),
+        modalWindow: () => modalWindow(dispatch),
+        setTaskName: (event) => setTaskName(event, dispatch),
+        addingTask: (task) => addingTask(dispatch, task),
+        cancelingTask: () => cancelingTask(dispatch),
+        makingTaskDone: (event, list) => makingTaskDone(event, dispatch, list),
+        editionTask: (id, list) => editionTask(dispatch, id, list),
+        updatingTask: (editedTask, task, list) =>
+            updatingTask(dispatch, editedTask, task, list),
+        deletingTask: (id, list) => deletingTask(dispatch, id, list),
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ToDoListContainer);
